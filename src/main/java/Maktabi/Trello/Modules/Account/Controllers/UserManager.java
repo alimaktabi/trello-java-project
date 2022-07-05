@@ -31,8 +31,6 @@ public class UserManager {
         return registered;
     }
 
-
-
     @GetMapping("/")
     public List<User> users() {
         return userService.users();

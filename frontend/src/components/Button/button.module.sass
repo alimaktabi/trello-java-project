@@ -1,0 +1,129 @@
+@use "../variables"
+
+@keyframes ripple
+  from
+    opacity: 1
+    transform: scale(0)
+
+  to
+    opacity: 0
+    transform: scale(2.5)
+
+.button
+  cursor: pointer
+  border-radius: 5px
+  transition: background-color 0.3s ease-out, box-shadow 0.3s ease-out
+  overflow: hidden
+  position: relative
+  outline: none
+  font-weight: 600
+
+  &.button-md
+    padding: 0.5rem 1rem
+
+  &.button-sm
+    padding: 0.2rem 0.5rem
+    font-size: small
+
+  &.button-lg
+    padding: 1rem 1.5rem !important
+    font-size: larger
+    font-weight: bold
+
+  &:hover
+    background-color: darken(white, 10)
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px
+
+  &[disabled]
+    opacity: 0.7
+    border: 3px solid
+    cursor: not-allowed
+    &:hover
+      color: black
+      background: none !important
+
+  > .ripple
+    pointer-events: none
+    position: absolute
+    border-radius: 50%
+    background-color: rgba(255, 255, 255, 0.7)
+    transition: 0.5s ease-out
+    transform: scale(0)
+    opacity: 1
+
+    &.active
+      transform: scale(2.5)
+      opacity: 0
+
+  &.container
+    border: 3px solid
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px
+    padding: calc(0.3rem + 2px) calc(1rem + 2px)
+
+  &.icon
+    padding: 0
+    display: grid
+    align-items: center
+    box-shadow: none
+    border-radius: 50%
+    text-align: center
+    background-color: transparent
+    border: none
+
+    > .ripple
+      background-color: #8d8d8d
+
+    &:hover
+      box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px
+
+  &.default
+    background-color: transparent !important
+    color: black !important
+    padding: 0.5rem 1rem
+    border: 3px solid
+
+    > .ripple
+      background-color: #8d8d8d
+
+  &.normal
+    border: 1px solid lighten(gray, 40)
+    background: transparent
+
+    >.ripple
+      background-color: #636363 !important
+
+  &.primary
+    border-color: variables.$green-600
+    background-color: variables.$green-600
+    color: white
+
+    &:hover
+      background-color: darken(variables.$green-600, 10)
+      border-color: darken(variables.$green-600, 10)
+
+  &.error
+    border-color: #d9534f
+    background-color: #d9534f
+    color: white
+
+    &:hover
+      background-color: darken(#d9534f, 10)
+      border-color: darken(#d9534f, 10)
+
+  &.secondary
+    border-color: #4361ee
+    background-color: #4361ee
+    color: white
+
+    &:hover
+      background-color: darken(#4361ee, 5)
+      border-color: darken(#4361ee, 5)
+
+  &.purple
+    border-color: variables.$purple-600
+    background-color: variables.$purple-600
+    color: white
+
+    &:hover
+      background-color: darken(variables.$purple-600, 5)
+      border-color: darken(variables.$purple-600, 5)

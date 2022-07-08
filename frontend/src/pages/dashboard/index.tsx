@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { FaAngleRight, FaChalkboard } from "react-icons/fa"
+import { FaAngleRight, FaChalkboard, FaPlus } from "react-icons/fa"
 import { Link } from "react-router-dom"
+import Button from "../../components/Button"
 import Styles from "./styles.module.sass"
 
 type Board = {
@@ -49,10 +50,17 @@ const Dashboard = () => {
   return (
     <div className={Styles.container}>
       <section className="m-6">
-        <h3 className="font-semibold flex items-center text-3xl">
-          <FaChalkboard className="inline mr-5" />
-          Boards
-        </h3>
+        <div className="flex justify-between items-center">
+          <h3 className="font-semibold flex items-center text-3xl">
+            <FaChalkboard className="inline mr-5" />
+            Boards
+          </h3>
+          <div className="text-right">
+            <Button color="primary" variant="default">
+              <FaPlus className="text-green-800" />
+            </Button>
+          </div>
+        </div>
         <div className="mt-16 grid gap-4 grid-cols-5">
           {boards.map((item, key) => (
             <Link

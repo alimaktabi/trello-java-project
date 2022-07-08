@@ -1,12 +1,43 @@
 import { useForm } from "react-hook-form"
 import Styles from "./styles.module.sass"
 import Text from "../../components/Form/Text"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { CgTrello } from "react-icons/all"
+import { useState } from "react"
+import http from "../../utils/http"
+import { UserContext, useUser } from "../../App"
 
 const Login = () => {
-  const { control } = useForm()
+  const { control, handleSubmit, setError } = useForm()
+
+  const [loading, setLoading] = useState(false)
+
+  const userManager = useUser()
+
+  const navigate = useNavigate()
+
+  const onSubmit = (data: any) => {
+    setLoading(true)
+
+    http
+      .post("/accounts/login/", data)
+      .then((res) => {
+        userManager.login(res.data)
+        setLoading(false)
+        navigate("/dashboard")
+      })
+      .catch((error) => {
+        setLoading(false)
+
+        setError("email", {
+          type: "required",
+          message: "Your credentials didn't match our record",
+        })
+
+        // throw error
+      })
+  }
 
   return (
     <div className={Styles.container}>
@@ -48,7 +79,13 @@ const Login = () => {
           </Link>
         </p>
         <div className="flex justify-end mt-5">
-          <Button color="primary">Login</Button>
+          <Button
+            loading={loading}
+            onClick={handleSubmit(onSubmit)}
+            color="primary"
+          >
+            Login
+          </Button>
         </div>
       </div>
     </div>

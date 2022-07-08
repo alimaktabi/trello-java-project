@@ -1,17 +1,16 @@
-package Maktabi.Trello.Modules.Account.Services;
+package Project.Trello.Modules.Account.Services;
 
 
-import Maktabi.Trello.Modules.Account.Models.User;
-import Maktabi.Trello.Modules.Account.Repository.UserRepository;
+import Project.Trello.Modules.Account.Models.User;
+import Project.Trello.Modules.Account.Repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
-public class UserService {
-    private UserRepository userRepository;
+public class UserService  {
+    public UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -32,7 +31,20 @@ public class UserService {
         return userRepository.findByEmail(email) != null;
     }
 
+    public User findByCredentials(String email, String password) {
+        User user = userRepository.findByEmail(email);
+
+        if (!user.password.equals(password))
+            return null;
+
+        return user;
+    }
+
     public List<User> users() {
         return userRepository.findAll();
+    }
+
+    public User findByToken(String token) {
+        return  userRepository.findByToken(token);
     }
 }

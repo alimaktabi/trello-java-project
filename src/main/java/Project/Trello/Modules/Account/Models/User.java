@@ -1,4 +1,4 @@
-package Maktabi.Trello.Modules.Account.Models;
+package Project.Trello.Modules.Account.Models;
 
 import lombok.Data;
 

@@ -1,17 +1,19 @@
-import React, { Fragment, ReactNode, useEffect, useRef, useState } from 'react'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import Styles from './button.module.sass'
+import React, { Fragment, ReactNode, useEffect, useRef, useState } from "react"
+import { CSSTransition, TransitionGroup } from "react-transition-group"
+import Styles from "./button.module.sass"
+import Loading from "../Loading"
 
 type Props = {
   children: ReactNode
-  variant?: 'icon' | 'container' | 'default'
+  variant?: "icon" | "container" | "default"
   className?: string
-  color?: 'primary' | 'secondary' | 'error' | 'warning' | 'normal' | 'purple'
+  color?: "primary" | "secondary" | "error" | "warning" | "normal" | "purple"
   onClick?: (e: React.MouseEvent) => void
   onClickCapture?: (e: React.MouseEvent) => void
   submit?: boolean
   disabled?: boolean
-  size?: 'sm' | 'md' | 'lg'
+  size?: "sm" | "md" | "lg"
+  loading?: boolean
 }
 
 type Shallows = {
@@ -29,7 +31,8 @@ const Button = ({
   submit,
   disabled,
   onClick,
-  size = 'md',
+  loading,
+  size = "md",
   onClickCapture,
   ...props
 }: Props): JSX.Element => {
@@ -78,39 +81,46 @@ const Button = ({
     <button
       ref={button}
       className={`${Styles.button} ${Styles[`button-${size}`]} ${
-        Styles[color || 'normal']
-      } ${Styles[variant || 'container']} ${className}`}
+        Styles[color || "normal"]
+      } ${Styles[variant || "container"]} ${className}`}
       onMouseDown={mouseDown}
-      type={submit ? 'submit' : 'button'}
+      type={submit ? "submit" : "button"}
       {...props}
-      disabled={disabled}
+      disabled={disabled || loading}
       onClickCapture={onClickCapture}
       onClick={onClick}
     >
-      {children}
-      <TransitionGroup component={Fragment}>
-        {shallows.map((item, key) => (
-          <CSSTransition
-            unmountOnExit
-            nodeRef={nodeRef}
-            key={key}
-            onEntering={enterRipple}
-            timeout={{ enter: 1000, exit: 0 }}
-          >
-            <div ref={nodeRef} style={item} className={Styles.ripple} />
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {children}
+          <TransitionGroup component={Fragment}>
+            {shallows.map((item, key) => (
+              <CSSTransition
+                unmountOnExit
+                nodeRef={nodeRef}
+                key={key}
+                onEntering={enterRipple}
+                timeout={{ enter: 1000, exit: 0 }}
+              >
+                <div ref={nodeRef} style={item} className={Styles.ripple} />
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </>
+      )}
     </button>
   )
 }
 
 Button.defaultProps = {
-  className: '',
+  className: "",
   submit: false,
   disabled: false,
   onClick: null,
-  size: 'md',
+  size: "md",
+  loading: false,
 }
 
 export default Button

@@ -15,13 +15,12 @@ type errorsProps = {
 const Errors = ({ messages }: errorsProps) => {
   if (!messages || !Object.keys(messages)) return null
 
-  const { ref, ...rest } = messages
-
   return (
     <>
-      {Object.values(rest).map((err, key) => (
+      <Error message={messages.message} />
+      {/* {Object.values(rest).map((err, key) => (
         <Error message={err} key={key} />
-      ))}
+      ))} */}
     </>
   )
 }

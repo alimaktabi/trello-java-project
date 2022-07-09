@@ -1,12 +1,44 @@
 import { useForm } from "react-hook-form"
 import Styles from "./styles.module.sass"
 import Text from "../../components/Form/Text"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Button from "../../components/Button"
 import { CgTrello } from "react-icons/all"
+import http from "../../utils/http"
+import { useState } from "react"
+import { useUser } from "../../App"
 
-const Login = () => {
-  const { control } = useForm()
+const Register = () => {
+  const { control, handleSubmit, setError } = useForm()
+
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+  const user = useUser()
+
+  const submit = (data: any) => {
+    if (data.password !== data.passwordConfirmation) {
+      setError("password", {
+        type: "required",
+        message: "Password and confirmation do not match",
+      })
+      return
+    }
+
+    setLoading(true)
+    http
+      .post("/accounts/register/", data)
+      .then((res) => {
+        user.login(res.data)
+        setLoading(false)
+        navigate("/dashboard")
+      })
+      .catch((error) => {
+        error.setValidations(setError)
+        setLoading(false)
+      })
+  }
 
   return (
     <div className={Styles.container}>
@@ -55,11 +87,17 @@ const Login = () => {
           </Link>
         </p>
         <div className="flex justify-end mt-5">
-          <Button color="primary">Register</Button>
+          <Button
+            loading={loading}
+            onClick={handleSubmit(submit)}
+            color="primary"
+          >
+            Register
+          </Button>
         </div>
       </div>
     </div>
   )
 }
 
-export default Login
+export default Register

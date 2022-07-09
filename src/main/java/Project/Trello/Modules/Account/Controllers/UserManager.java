@@ -6,10 +6,9 @@ import Project.Trello.Modules.Account.Services.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Arrays;
+import javax.validation.ValidationException;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,17 +33,26 @@ public class UserManager {
     public User register(@Valid @RequestBody() User user, HttpServletResponse response) throws Exception {
         User registered = userService.create(user);
 
-        response.addCookie(new Cookie("token", registered.token));
+        var cookie = new Cookie("token", user.token);
+
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
 
         return registered;
     }
 
     @PostMapping("login/")
-    public User login(@RequestBody() LoginRequest body, HttpServletResponse response) {
+    public User login(@Valid() @RequestBody() LoginRequest body, HttpServletResponse response) {
+        if (!userService.exists(body.email))
+        {
+            throw new ValidationException("Account not found");
+        }
+
         User user = userService.findByCredentials(body.email, body.password);
 
         if (user == null)
-            return null;
+            throw new ValidationException("Your credentials didn't match our record");
 
         user.token = UUID.randomUUID().toString();
 
@@ -57,6 +65,26 @@ public class UserManager {
         response.addCookie(cookie);
 
         return user;
+    }
+
+    @PostMapping("/logout")
+    public boolean logout(@CookieValue() String token, HttpServletResponse response) {
+        var user = userService.findByToken(token);
+
+        var cookie = new Cookie("token", null);
+
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+
+        if (user == null)
+            return false;
+
+        user.token = null;
+
+        userService.userRepository.save(user);
+
+        return true;
     }
 
     @GetMapping("/")

@@ -1,5 +1,6 @@
 package Project.Trello.Modules.Account.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -26,7 +27,15 @@ public class User {
     public String email;
 
     @NotBlank
+    @Column(unique = true)
+    public String phoneNumber;
+
+    @NotBlank
     public String password;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String token;
 

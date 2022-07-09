@@ -2,7 +2,9 @@ package Project.Trello.Modules.Account.Helpers;
 
 import Project.Trello.Modules.Account.Models.User;
 import Project.Trello.Modules.Account.Services.UserService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Authentication {
     private UserService userService;
 

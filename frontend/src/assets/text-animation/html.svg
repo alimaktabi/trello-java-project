@@ -1,0 +1,19 @@
+<svg width="640" height="240">
+  <title>SVG Hello World! Example</title>
+  <defs>
+       <linearGradient id="the_gradient" 
+         gradientUnits="objectBoundingBox" 
+         x1="0" y1="0" 
+         x2="1" y2="0">
+           <stop offset="0" stop-color="rgb(204,204,255)"/>
+           <stop offset="0.2" stop-color="rgb(204,204,255)"/>
+           <stop offset="1" stop-color="rgb(102,102,204)"/>
+       </linearGradient>
+  </defs>
+  <g>
+       <rect x="0" y="0" width="640" height="480" fill="url(#the_gradient)"/>
+       <text x="145" y="140" transform="translate(175,140) scale(4) skewX(30) 
+       translate(-175,-140)" font-size="24" font-family="ComicSansMS"          
+       fill="rgb(255,255,102)">Hello World!</text>
+  </g>
+</svg>

@@ -1,7 +1,8 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FaAngleRight, FaChalkboard, FaPlus } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import Button from "../../components/Button"
+import http from "../../utils/http"
 import Styles from "./styles.module.sass"
 
 type Board = {
@@ -45,7 +46,21 @@ const defaultBoardData: Board[] = [
 ]
 
 const Dashboard = () => {
-  const [boards, setBaords] = useState<Board[]>(defaultBoardData)
+  const [boards, setBaords] = useState<Board[]>([])
+
+  useEffect(() => {
+    let isMounted = true
+
+    http.get("/boards/").then((res) => {
+      if (!isMounted) return
+
+      setBaords(res.data)
+    })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <div className={Styles.container}>
@@ -56,9 +71,11 @@ const Dashboard = () => {
             Boards
           </h3>
           <div className="text-right">
-            <Button color="primary" variant="default">
-              <FaPlus className="text-green-800" />
-            </Button>
+            <Link to="/boards/create">
+              <Button color="primary" variant="default">
+                <FaPlus className="text-green-800" />
+              </Button>
+            </Link>
           </div>
         </div>
         <div className="mt-16 grid gap-4 grid-cols-5">

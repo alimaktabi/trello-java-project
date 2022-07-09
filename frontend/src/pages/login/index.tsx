@@ -6,7 +6,7 @@ import Button from "../../components/Button"
 import { CgTrello } from "react-icons/all"
 import { useState } from "react"
 import http from "../../utils/http"
-import { UserContext, useUser } from "../../App"
+import { useUser } from "../../App"
 
 const Login = () => {
   const { control, handleSubmit, setError } = useForm()
@@ -23,19 +23,21 @@ const Login = () => {
     http
       .post("/accounts/login/", data)
       .then((res) => {
-        userManager.login(res.data)
         setLoading(false)
+        if (!res.data) {
+          setError("email", {
+            type: "required",
+            message: "Your credentials didn't match our record",
+          })
+          return
+        }
+        userManager.login(res.data)
         navigate("/dashboard")
       })
       .catch((error) => {
         setLoading(false)
 
-        setError("email", {
-          type: "required",
-          message: "Your credentials didn't match our record",
-        })
-
-        // throw error
+        error.setValidations(setError)
       })
   }
 

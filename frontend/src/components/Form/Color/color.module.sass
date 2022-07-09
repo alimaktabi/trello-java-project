@@ -1,0 +1,93 @@
+
+@use "../../variables"
+
+.container
+  border: 1px solid #b3b4b7
+  text-align: right
+  border-radius: 5px
+  position: relative
+  width: 100px
+  height: 50px
+  display: grid
+  place-items: center
+  transition: 0.1s ease
+  background-color: variables.$gray-100
+
+  &.error
+    svg
+      position: absolute
+      left: 0.35rem
+      content: "\f06a"
+      font-size: larger
+      top: 50%
+      transform: translateY(-50%)
+      color: #EC6060FF
+
+      border: 2px solid #EC6060FF
+
+    > label
+      > span
+        color: #EC6060FF !important
+
+    &.focus
+      border: 3px solid #EC6060FF
+
+  &.md
+    > label > span
+      font-size: 0.9rem
+
+      height: 35px
+
+  &.lg
+    height: 50px
+    input
+      font-size: 1.1rem
+
+  &.sm
+    font-size: 14px
+    font-weight: 400
+
+  > label
+    width: 100%
+    height: 100%
+    font-weight: 500
+    font-size: medium
+    margin: 0
+    color: variables.$gray-1000
+
+    // > span
+    //   pointer-events: none
+    //   position: absolute
+    //   top: 50%
+    //   transform: translateY(-60%)
+    //   right: 0.5rem
+    //   transition: 0.2s ease
+    //   border-radius: 4px
+
+    > input
+      border-radius: 5px
+      width: 100%
+      height: 100%
+      background-color: transparent
+      border: none
+      outline: none
+      color: #2d2d2d
+
+  &.focus
+    border: 3px solid #4361ee
+  //   > label
+  //     > span
+  //       font-weight: 600
+  //       right: 0.1rem
+  //       color: #3950bf
+  //       top: -0.8rem !important
+  //       font-size: small
+
+  // &.active
+  //   > label
+  //     > span
+  //       font-weight: 600
+  //       color: variables.$gray-1100
+  //       right: 0.1rem
+  //       font-size: small
+  //       top: -0.7rem

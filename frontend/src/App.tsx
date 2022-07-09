@@ -1,10 +1,11 @@
-import { createContext, useContext, useState } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 import Header from "./components/Header"
 
 import { Routes } from "./routes"
 import { useLocation } from "react-router-dom"
 import { LoginUser, LogoutUser, user } from "./utils/user"
+import http from "./utils/http"
 
 export const UserContext = createContext({
   value: user,
@@ -26,6 +27,26 @@ function App() {
     LogoutUser()
     setAuth(null)
   }
+
+  useEffect(() => {
+    let isMounted = true
+
+    http
+      .get("/accounts/me")
+      .then((res) => {
+        if (!isMounted) return
+
+        if (!res.data) logout()
+      })
+      .catch(() => {
+        if (!isMounted) return
+        logout()
+      })
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <UserContext.Provider

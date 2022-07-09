@@ -1,14 +1,14 @@
 package Project.Trello.Modules.Board.Models;
 
 
+import Project.Trello.Modules.Account.Models.User;
+import Project.Trello.Modules.Task.Models.State;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,4 +21,16 @@ public class Board {
     public String name;
 
     public Date date;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    public User mainAdmin;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    public Set<User> users;
+
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, targetEntity = State.class)
+    @OrderBy("order")
+    public Set<State> states;
+
+    public String color;
 }

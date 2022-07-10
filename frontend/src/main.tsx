@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom"
 import App from "./App"
 
 import "./App.sass"
+import "./styles/global.sass"
 
 import { ToastContainer } from "react-toastify"
 

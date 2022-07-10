@@ -4,6 +4,8 @@ package Project.Trello.Modules.Board.Controllers;
 import Project.Trello.Modules.Account.Helpers.Authentication;
 import Project.Trello.Modules.Board.Models.Board;
 import Project.Trello.Modules.Board.Services.BoardService;
+import Project.Trello.Modules.Task.Models.State;
+import Project.Trello.Modules.Task.Service.StateService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,9 +22,13 @@ public class BoardManager {
 
     Authentication authentication;
 
+    StateService stateService;
 
-    public BoardManager(BoardService boardService, Authentication authentication) {
+
+    public BoardManager(BoardService boardService, Authentication authentication, StateService stateService) {
         this.boardService = boardService;
+
+        this.stateService = stateService;
 
         this.authentication = authentication;
     }
@@ -51,18 +57,15 @@ public class BoardManager {
 
     @PostMapping("/update")
     public Board update(@Valid() @RequestBody() Board board) {
-        return boardService.boardRepository.save(board);
 
-//        Optional<Board> board1 = boardService.boardRepository.findById(id);
-//
-//        if (board1.isEmpty())
-//            return null;
-//
-//        board1.get().name = board.name;
-//
-//        boardService.boardRepository.save(board1.get());
-//
-//        return board1.get();
+        if (board.states != null) {
+            for (State state : board.states) {
+                state.board = board;
+                stateService.saveWithTasks(state);
+            }
+        }
+
+        return boardService.boardRepository.save(board);
     }
 
     @PostMapping("/create")

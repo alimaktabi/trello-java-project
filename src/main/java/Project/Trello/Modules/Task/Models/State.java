@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.context.annotation.Bean;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Set;
@@ -27,7 +25,7 @@ public class State {
     @ManyToOne
     public Board board;
 
-    public int order;
+    public Integer orderInt;
 
     @OneToMany(mappedBy = "state", fetch = FetchType.EAGER)
     public Set<Task> tasks;

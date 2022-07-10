@@ -9,7 +9,7 @@ import { useUser } from "../../App"
 import { useNavigate } from "react-router-dom"
 
 const Profile = () => {
-  const { control, handleSubmit, reset, setError } = useForm()
+  const { control, handleSubmit, reset, setError, watch } = useForm()
 
   const [logoutLoading, setLogoutLoading] = useState(false)
 
@@ -33,6 +33,29 @@ const Profile = () => {
       })
       return
     }
+    setLoading(true)
+
+    const formData = new FormData()
+
+    const { photo, ...rest } = data
+
+    Object.keys(rest).forEach((key) => {
+      formData.append(key, data[key])
+    })
+
+    formData.append("photo", photo[0])
+
+    http
+      .post("/accounts/update", formData, {
+        // headers: {
+        //   "Content-Type": "multipart/form-data",
+        // },
+      })
+      .then((res) => {
+        user.login(res.data)
+
+        navigate("/dashboard")
+      })
   }
 
   const logoutUser = () => {
@@ -68,6 +91,17 @@ const Profile = () => {
           <div className="text-center">
             <hr className="mt-4 mb-2" />
           </div>
+          <div>
+            {watch("image") && (
+              <img
+                src={"http://localhost:8080" + watch("image")}
+                className="mx-auto rounded-full border border-gray-300"
+                alt="user profile"
+                width={150}
+                height={150}
+              />
+            )}
+          </div>
           <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-10">
             <Text control={control} name="firstName" label="First Name" />
             <Text control={control} name="lastName" label="Last Name" />
@@ -85,6 +119,11 @@ const Profile = () => {
               type="password"
               name="passwordConfirmation"
               label="Password Confirmation"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              {...control.register("photo")}
             />
           </div>
           <div className="flex justify-end mt-10">

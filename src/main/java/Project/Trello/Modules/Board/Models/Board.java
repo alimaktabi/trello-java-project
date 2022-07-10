@@ -29,7 +29,7 @@ public class Board {
     public Set<User> users;
 
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, targetEntity = State.class)
-    @OrderBy("order")
+    @OrderBy("orderInt")
     public Set<State> states;
 
     public String color;

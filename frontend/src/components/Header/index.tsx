@@ -16,9 +16,11 @@ const Header = () => {
         </h3>
       </Link>
       <div className="flex font-semibold text-lg">
-        <Link to="/dashboard" className="mx-5">
-          Dashboard
-        </Link>
+        {!!userManager.value && (
+          <Link to="/dashboard" className="mx-5">
+            Dashboard
+          </Link>
+        )}
         <span className="mx-5">Workspaces</span>
         <span className="mx-5">Boards</span>
       </div>

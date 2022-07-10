@@ -15,7 +15,7 @@ import java.util.Set;
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @EqualsAndHashCode.Exclude
@@ -23,12 +23,17 @@ public class Task {
     @JsonIgnore
     public State state;
 
+    public String name;
+
     @OneToMany
     public Set<User> assignedTo;
 
+    @OneToMany
+    public Set<Discussion> discussions;
+
     public String description;
 
-    public int order;
+    public Integer orderInt;
 
     public Date date;
 }

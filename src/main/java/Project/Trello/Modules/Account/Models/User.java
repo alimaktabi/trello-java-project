@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    public Long id;
 
 
     @NotBlank(message = "First Name is required")

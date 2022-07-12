@@ -88,7 +88,7 @@ const Modal: FC<Props> = ({ children }) => {
         className={`fixed inset-0 z-10 transition-all delay-100 ${
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
-        style={{ backgroundColor: "#ffffffa0" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       >
         <div
           ref={ref}
